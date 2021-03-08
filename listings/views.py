@@ -1,5 +1,3 @@
-from django.contrib.auth.models import User
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, viewsets
 from rest_framework import permissions
 
@@ -24,19 +22,3 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(designer=self.request.user)
-
-
-# class RegisterView(generics.CreateAPIView):
-#     permission_classes = (~IsAuthenticated,)
-#     queryset = User.objects.all()
-#     serializer_class = RegisterSerializer
-#
-#
-# class UserList(generics.ListAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#
-#
-# class UserDetail(generics.RetrieveAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
