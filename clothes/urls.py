@@ -15,17 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from listings import views as listing_views
+
+router = DefaultRouter()
+router.register(r'products', listing_views.ProductViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('brands/', listing_views.BrandList.as_view()),
-    path('products/', listing_views.ProductList.as_view()),
-    path('products/<int:pk>', listing_views.ProductDetail.as_view()),
-    path('users/', listing_views.UserList.as_view()),
-    path('users/<int:pk>/', listing_views.UserDetail.as_view()),
-    path('api-auth/register/', listing_views.RegisterView.as_view(),
-         name='auth_register'),
-    path('api-auth/', include('rest_framework.urls')),
+    path('', include('users.urls')),
+    path('', include(router.urls))
 ]

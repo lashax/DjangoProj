@@ -4,8 +4,7 @@ from rest_framework import generics, viewsets
 from rest_framework import permissions
 
 from listings.models import Product, Brand
-from listings.serializers import (UserSerializer, ProductSerializer,
-                                  RegisterSerializer, BrandSerializer)
+from listings.serializers import ProductSerializer, BrandSerializer
 from .paginations import PaginationPerTen
 from .permissions import IsOwnerOrReadOnly
 
@@ -27,17 +26,17 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer.save(designer=self.request.user)
 
 
-class RegisterView(generics.CreateAPIView):
-    permission_classes = (~IsAuthenticated,)
-    queryset = User.objects.all()
-    serializer_class = RegisterSerializer
-
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class RegisterView(generics.CreateAPIView):
+#     permission_classes = (~IsAuthenticated,)
+#     queryset = User.objects.all()
+#     serializer_class = RegisterSerializer
+#
+#
+# class UserList(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#
+#
+# class UserDetail(generics.RetrieveAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
