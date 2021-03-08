@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework import permissions
 
 from listings.models import Product, Brand
@@ -10,20 +10,21 @@ from .paginations import PaginationPerTen
 from .permissions import IsOwnerOrReadOnly
 
 
-class ProductList(generics.ListCreateAPIView):
+class BrandList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    pagination_class = PaginationPerTen
+
+
+class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(designer=self.request.user)
-
-
-class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly]
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -40,10 +41,3 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
-class BrandList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
-    pagination_class = PaginationPerTen
