@@ -14,12 +14,3 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # მონაცემების შეცვლა მხოლოდ მის შემქმნელს უნდა შეეძლოს
         return obj.designer == request.user
-
-
-class IsNotAuthenticated(permissions.BasePermission):
-    """
-    ამოწმებს არის თუ არა მოხმარებელი შესული საიტზე პროფილით. თუ არ არის,
-    აბრუნებს True, თუ არის, აბრუნებს False.
-    """
-    def has_permission(self, request, view):
-        return not request.user.is_authenticated

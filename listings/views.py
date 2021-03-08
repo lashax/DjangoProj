@@ -1,11 +1,14 @@
-from .permissions import IsOwnerOrReadOnly, IsNotAuthenticated
-from listings.models import Clothes
-from listings.serializers import ClothesSerializer, RegisterSerializer
-from rest_framework import generics
 from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework import permissions
 
-from listings.serializers import UserSerializer
+from listings.models import Clothes, Brand
+from listings.serializers import (UserSerializer, ClothesSerializer,
+                                  RegisterSerializer)
+from .permissions import IsOwnerOrReadOnly
 
 
 class ClothesList(generics.ListCreateAPIView):
@@ -25,7 +28,7 @@ class ClothesDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RegisterView(generics.CreateAPIView):
-    permission_classes = (IsNotAuthenticated, )
+    permission_classes = (~IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
@@ -38,3 +41,11 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class ListBrands(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        brands = [brand.name for brand in Brand.objects.all()]
+        return Response(brands)
