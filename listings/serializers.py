@@ -3,20 +3,26 @@ from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
-from .models import Clothes
+from .models import Product, Brand
 
 
-class ClothesSerializer(serializers.ModelSerializer):
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ['name', 'origin_country', 'origin_date']
+
+
+class ProductSerializer(serializers.ModelSerializer):
     designer = serializers.ReadOnlyField(source='designer.username')
 
     class Meta:
-        model = Clothes
-        fields = ['id', 'title', 'description', 'price', 'designer']
+        model = Product
+        fields = ['id', 'brand', 'title', 'description', 'price', 'designer']
 
 
 class UserSerializer(serializers.ModelSerializer):
     listings = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Clothes.objects.all())
+        many=True, queryset=Product.objects.all())
 
     class Meta:
         model = User

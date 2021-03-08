@@ -20,12 +20,12 @@ from listings import views as listing_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('clothes/', listing_views.ClothesList.as_view()),
-    path('clothes/<int:pk>', listing_views.ClothesDetail.as_view()),
+    path('brands/', listing_views.BrandList.as_view()),
+    path('products/', listing_views.ProductList.as_view()),
+    path('products/<int:pk>', listing_views.ProductDetail.as_view()),
     path('users/', listing_views.UserList.as_view()),
     path('users/<int:pk>/', listing_views.UserDetail.as_view()),
     path('api-auth/register/', listing_views.RegisterView.as_view(),
          name='auth_register'),
-    path('brands/', listing_views.ListBrands.as_view()),
     path('api-auth/', include('rest_framework.urls')),
 ]

@@ -15,7 +15,7 @@ class Brand(models.Model):
         verbose_name_plural = 'Brands'
 
 
-class Clothes(models.Model):
+class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     designer = models.ForeignKey('auth.User', related_name='listings',
                                  on_delete=models.CASCADE)
@@ -29,5 +29,5 @@ class Clothes(models.Model):
 
     class Meta:
         ordering = ['created']
-        verbose_name = 'Clothes'
-        verbose_name_plural = 'Clothes'
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'

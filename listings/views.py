@@ -5,26 +5,26 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import permissions
 
-from listings.models import Clothes, Brand
-from listings.serializers import (UserSerializer, ClothesSerializer,
-                                  RegisterSerializer)
+from listings.models import Product, Brand
+from listings.serializers import (UserSerializer, ProductSerializer,
+                                  RegisterSerializer, BrandSerializer)
 from .permissions import IsOwnerOrReadOnly
 
 
-class ClothesList(generics.ListCreateAPIView):
+class ProductList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Clothes.objects.all()
-    serializer_class = ClothesSerializer
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
     def perform_create(self, serializer):
         serializer.save(designer=self.request.user)
 
 
-class ClothesDetail(generics.RetrieveUpdateDestroyAPIView):
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
-    queryset = Clothes.objects.all()
-    serializer_class = ClothesSerializer
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -43,9 +43,7 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
 
-class ListBrands(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, format=None):
-        brands = [brand.name for brand in Brand.objects.all()]
-        return Response(brands)
+class BrandList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
